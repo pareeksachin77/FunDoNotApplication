@@ -4,6 +4,8 @@ using RepoLayer.Entities;
 using RepoLayer.Interface;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Text;
 
 namespace RepoLayer.Service
@@ -39,6 +41,27 @@ namespace RepoLayer.Service
             {
                 throw ex;
             }
+        }
+        public string Login(UserLogin userLogin)
+        {
+            try
+            {
+                var result = fundoo.UsersTable.Where(x => x.Email == userLogin.Email && x.Password == userLogin.Password).FirstOrDefault();
+                if (result != null)
+                {
+                    return "Login Successful";
+                }
+                else
+                {
+                    return null ;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
     }
 }
