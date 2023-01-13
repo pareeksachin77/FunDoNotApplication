@@ -5,8 +5,6 @@ using RepoLayer.Context;
 using RepoLayer.Entities;
 using RepoLayer.Interface;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -108,6 +106,29 @@ namespace RepoLayer.Service
                 {
                     return null;
                 }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool ResetPassword(string email, string new_password, string confirm_password)
+        {
+            try
+            {
+                if(new_password== confirm_password)
+                {
+                    var result = fundoo.UsersTable.Where(x=>x.Email == email).FirstOrDefault();
+                    result.Password = new_password;
+                    fundoo.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
             }
             catch (Exception)
             {
