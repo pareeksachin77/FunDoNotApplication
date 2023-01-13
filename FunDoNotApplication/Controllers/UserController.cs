@@ -56,5 +56,27 @@ namespace FunDoNotApplication.Controllers
                 throw;
             }
         }
+        [HttpPost]
+        [Route("ForgotPassword")]
+        public IActionResult ForgotPassword(string email)
+        {
+            try
+            {
+                var result = objIUserBL.ForgotPassword(email);
+                if (result != null)
+                {
+                    return this.Ok(new { success = true, message = "Mail Sent Successfull", data = result });
+                }
+                else
+                {
+                    return this.NotFound(new { success = false, message = "Mail Sent UnSuccessfull", });
+                }
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
