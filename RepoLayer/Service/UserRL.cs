@@ -32,7 +32,7 @@ namespace RepoLayer.Service
                 userEntity.LastName = userRegistration.LastName;
                 userEntity.Email = userRegistration.Email;
                 userEntity.Password = userRegistration.Password;
-                fundoo.UsersTable.Add(userEntity);
+                fundoo.UserTable.Add(userEntity);
                 int result = fundoo.SaveChanges();
                 if(result> 0)
                 {
@@ -52,7 +52,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result = fundoo.UsersTable.Where(x => x.Email == userLogin.Email && x.Password == userLogin.Password).FirstOrDefault();
+                var result = fundoo.UserTable.Where(x => x.Email == userLogin.Email && x.Password == userLogin.Password).FirstOrDefault();
                 if (result != null)
                 {
                     var token = GenerateSecurityToken(result.Email, result.UserId);
@@ -94,7 +94,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result = fundoo.UsersTable.Where(x => x.Email == email).FirstOrDefault();
+                var result = fundoo.UserTable.Where(x => x.Email == email).FirstOrDefault();
                 if(result != null)
                 {
                     var token = GenerateSecurityToken(result.Email, result.UserId);
@@ -119,7 +119,7 @@ namespace RepoLayer.Service
             {
                 if(new_password== confirm_password)
                 {
-                    var result = fundoo.UsersTable.Where(x=>x.Email == email).FirstOrDefault();
+                    var result = fundoo.UserTable.Where(x=>x.Email == email).FirstOrDefault();
                     result.Password = new_password;
                     fundoo.SaveChanges();
                     return true;
