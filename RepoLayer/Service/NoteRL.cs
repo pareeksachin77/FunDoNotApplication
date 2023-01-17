@@ -5,6 +5,7 @@ using CommonLayer.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace RepoLayer.Service
 {
@@ -47,6 +48,19 @@ namespace RepoLayer.Service
             {
 
                 throw ex;
+            }
+        }
+        public IEnumerable<NotesEntity> ReadNote(long userId, long notesId)
+        {
+            try
+            {
+                var result = fundoo.NotesTable.Where(e => e.UserId == userId);
+                return result;
+            }
+            catch (Exception e)
+            {
+
+                throw;
             }
         }
     }

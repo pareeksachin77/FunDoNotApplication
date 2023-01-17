@@ -20,7 +20,7 @@ namespace FunDoNotApplication.Controllers
             this.noteBL = noteBL;
         }
 
-        
+        [Authorize]
         [HttpPost]
         [Route("Create")]
         
@@ -47,5 +47,31 @@ namespace FunDoNotApplication.Controllers
                 throw;
             }
         }
+
+        [HttpGet]
+        [Route("GetNote")]
+
+        public IActionResult ReadNote(long noteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = noteBL.ReadNotes(userId,noteId);
+                if (result != null)
+                {
+                    return this.Ok(new { success = true, Message = "Get Notes Successfully", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Unable to get notes" });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
