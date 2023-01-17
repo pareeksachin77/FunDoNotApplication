@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace RepoLayer.Service
 {
@@ -15,6 +16,7 @@ namespace RepoLayer.Service
         public NoteRL(FunDoContext fundoo)
         {
             this.fundoo = fundoo;
+            
         }
 
         public NotesEntity CreateNote(NoteModel noteModel,long userId)
@@ -58,6 +60,36 @@ namespace RepoLayer.Service
                 return result;
             }
             catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+        public bool UpdateNotes(long userId, long notesId,NoteModel noteModel)
+        {
+            try
+            {
+                var result = fundoo.NotesTable.FirstOrDefault(e => e.UserId == userId && e.NoteID == notesId);
+                if(result != null)
+                {
+                    if(noteModel.Title != null)
+                    {
+                        result.Title = noteModel.Title;
+                    }
+                    if(noteModel.Description != null){
+                        result.Description = noteModel.Description;
+                    }
+                    result.Updated = DateTime.Now;
+                    fundoo.SaveChanges();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
             {
 
                 throw;

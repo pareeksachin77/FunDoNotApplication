@@ -45,6 +45,18 @@ namespace BusinessLayer.Service
                 throw;
             }
         }
-      
+        public bool UpdateNotes(long userId, long notesId, NoteModel noteModel)
+        {
+            try
+            {
+                return this.noteRL.UpdateNotes(notesId, userId, noteModel);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
     }
 }

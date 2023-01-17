@@ -10,5 +10,7 @@ namespace RepoLayer.Interface
     {
         public NotesEntity CreateNote(NoteModel noteModel, long UserId);
         public IEnumerable<NotesEntity> ReadNote(long userId, long notesId);
+
+        public bool UpdateNotes(long userId, long notesId, NoteModel noteModel);
     }
 }

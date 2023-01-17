@@ -72,6 +72,32 @@ namespace FunDoNotApplication.Controllers
                 throw;
             }
         }
+        [HttpPut]
+        [Route("Update")]
+        public IActionResult UpdateNotes(long notesId, NoteModel noteModel)
+        {
+
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = noteBL.UpdateNotes(userId, notesId, noteModel);
+
+                if (result != null)
+                {
+                    return this.Ok(new { success = true, Message = "Update Successfully", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Note Updated" });
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
     }
 }
