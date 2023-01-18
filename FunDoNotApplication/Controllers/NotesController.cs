@@ -99,5 +99,34 @@ namespace FunDoNotApplication.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("Delete")]
+        public IActionResult DeleteNotes(long notesId, NoteModel noteModel)
+        {
+
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = noteBL.DeleteNotes(userId, notesId);
+
+                if (result != null)
+                {
+                    return this.Ok(new { success = true, Message = "Deleted Successfully", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Not Deleted" });
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+
     }
 }
