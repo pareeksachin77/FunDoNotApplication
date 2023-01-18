@@ -39,7 +39,7 @@ namespace BusinessLayer.Service
             {
                 return noteRL.ReadNote(userId, notesId);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;
@@ -69,11 +69,11 @@ namespace BusinessLayer.Service
                 throw;
             }
         }
-        public bool PinNote(long notesId)
+        public bool PinNote(long notesId, long userId)
         {
             try
             {
-                return this.PinNote(notesId);
+                return this.noteRL.PinNote(notesId,userId);
             }
             catch (Exception)
             {
@@ -82,6 +82,18 @@ namespace BusinessLayer.Service
             }
         }
 
+        public bool Trash(long notesId , long userId)
+        {
+            try
+            {
+                return this.noteRL.Trash(notesId, userId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
     }
 }

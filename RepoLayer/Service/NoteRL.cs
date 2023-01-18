@@ -59,7 +59,7 @@ namespace RepoLayer.Service
                 var result = fundoo.NotesTable.Where(e => e.UserId == userId);
                 return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
                 throw;
@@ -118,11 +118,11 @@ namespace RepoLayer.Service
                 throw;
             }
         }
-        public bool PinNote(long notesId)
+        public bool PinNote(long notesId,long userId)
         {
             try
             {
-                var result = fundoo.NotesTable.FirstOrDefault(e=>e.NoteID == notesId);
+                var result = fundoo.NotesTable.FirstOrDefault(e=>e.NoteID == notesId && e.UserId==userId);
                 if (result.Pin == true)
                 {
                     result.Pin = false;
@@ -144,6 +144,32 @@ namespace RepoLayer.Service
            
 
         }
+        public bool Trash(long notesId,long userId)
+        {
+            try
+            {
+                var result = fundoo.NotesTable.FirstOrDefault(e => e.NoteID == notesId && e.UserId == userId);
+                if ( result.Trash == true)
+                {
+                    result.Trash=false;
+                    fundoo.SaveChanges();
+                    return false;
+                }
+                else
+                {
+                    result.Trash = true;
+                    fundoo.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+       
 
     }
 }

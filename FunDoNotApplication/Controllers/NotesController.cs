@@ -51,12 +51,12 @@ namespace FunDoNotApplication.Controllers
         [HttpGet]
         [Route("GetNote")]
 
-        public IActionResult ReadNote(long noteId)
+        public IActionResult ReadNote(long notesId)
         {
             try
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
-                var result = noteBL.ReadNotes(userId,noteId);
+                var result = noteBL.ReadNotes(userId,notesId);
                 if (result != null)
                 {
                     return this.Ok(new { success = true, Message = "Get Notes Successfully", data = result });
@@ -82,7 +82,7 @@ namespace FunDoNotApplication.Controllers
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
                 var result = noteBL.UpdateNotes(userId, notesId, noteModel);
 
-                if (result != null)
+                if (result == true)
                 {
                     return this.Ok(new { success = true, Message = "Update Successfully", data = result });
                 }
@@ -109,7 +109,7 @@ namespace FunDoNotApplication.Controllers
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
                 var result = noteBL.DeleteNotes(userId, notesId);
 
-                if (result != null)
+                if (result != false)
                 {
                     return this.Ok(new { success = true, Message = "Deleted Successfully", data = result });
                 }
@@ -125,20 +125,57 @@ namespace FunDoNotApplication.Controllers
                 throw;
             }
         }
-        
-        public IActionResult PinNote(long noteId)
+
+        [HttpPut]
+        [Route("Pin")]
+        public IActionResult PinNote(long notesId)
         {
             try
             {
-                var result = noteBL.PinNote(noteId);
-                if(result != null)
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = noteBL.PinNote(notesId,userId);
+                if(result==true)
                 {
                     return  this.Ok(new { success = true, message = "Pinned Successfully", data = result });
                 }
+                else if (result == false)
+                {
+                    return Ok(new { success = true, message = "Note Unpinned successfully." });
+                }
                 else
                 {
-                    return BadRequest(new { success = false, message = "UnPinned." });
+                    return this.BadRequest(new { success = false, message = "UnPinned." });
                 }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPut]
+        [Route("Trash")]
+        public IActionResult Trash(long notesId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = noteBL.Trash(notesId,userId);
+                
+                    if (result == true)
+                    {
+                        return this.Ok(new { success = true, message = "Note moved to bin." });
+                    }
+                    else if (result == false)
+                    {
+                        return Ok(new { success = true, message = "Note moved to home." });
+                    }
+                    else
+                     {
+                    return this.BadRequest(new { success = false, message = "something went wrong" });
+                     }
+
             }
             catch (Exception)
             {
