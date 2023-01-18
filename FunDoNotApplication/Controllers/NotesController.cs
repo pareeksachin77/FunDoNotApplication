@@ -125,7 +125,27 @@ namespace FunDoNotApplication.Controllers
                 throw;
             }
         }
+        
+        public IActionResult PinNote(long noteId)
+        {
+            try
+            {
+                var result = noteBL.PinNote(noteId);
+                if(result != null)
+                {
+                    return  this.Ok(new { success = true, message = "Pinned Successfully", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "UnPinned." });
+                }
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
 
 
     }

@@ -118,5 +118,32 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        public bool PinNote(long notesId)
+        {
+            try
+            {
+                var result = fundoo.NotesTable.FirstOrDefault(e=>e.NoteID == notesId);
+                if (result.Pin == true)
+                {
+                    result.Pin = false;
+                    fundoo.SaveChanges();
+                    return false;
+                }
+                else
+                {
+                    result.Pin = true;
+                    fundoo.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
+
+        }
+
     }
 }
