@@ -184,6 +184,35 @@ namespace FunDoNotApplication.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("Archive")]
+        public IActionResult Archive(long notesId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = noteBL.Trash(notesId, userId);
+
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "Note Archived successfully." });
+                }
+                else if (result == false)
+                {
+                    return Ok(new { success = true, message = "Note UnArchived successfully." });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Cannot perform operation" });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
 
     }
 }

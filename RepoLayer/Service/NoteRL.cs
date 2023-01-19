@@ -169,7 +169,30 @@ namespace RepoLayer.Service
             }
         }
 
-       
+       public bool Archive(long notesId, long userId)
+        {
+            try
+            {
+                var result = fundoo.NotesTable.FirstOrDefault(e => e.NoteID == notesId && e.UserId == userId);
+                if (result.Archive == true)
+                {
+                    result.Archive = false;
+                    fundoo.SaveChanges();
+                    return false;
+                }
+                else
+                {
+                    result.Archive = true;
+                    fundoo.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
     }
 }

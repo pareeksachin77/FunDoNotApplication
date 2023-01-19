@@ -16,5 +16,6 @@ namespace RepoLayer.Interface
         public bool PinNote(long notesId, long userId);
 
         public bool Trash(long notesId, long userId);
+        public bool Archive(long notesId, long userId);
     }
 }
