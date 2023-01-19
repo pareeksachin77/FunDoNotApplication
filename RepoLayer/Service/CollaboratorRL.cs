@@ -45,5 +45,27 @@ namespace RepoLayer.Service
             
 
         }
+        public IEnumerable<CollaboratorEntity> GetCollab(long notesId)
+        {
+            try
+            {
+                var Result = fundoo.CollabTable.Where(x => x.NoteID ==notesId).ToList();
+                if (Result != null)
+                {
+                    return Result;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+
+        }
     }
 }

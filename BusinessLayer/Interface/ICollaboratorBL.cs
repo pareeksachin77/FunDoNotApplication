@@ -8,5 +8,6 @@ namespace BusinessLayer.Interface
     public interface ICollaboratorBL
     {
         public CollaboratorEntity CreateCollab(long notesId, string email);
+        public IEnumerable<CollaboratorEntity> GetCollab(long notesId);
     }
 }

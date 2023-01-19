@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RepoLayer.Context;
+using System.Linq;
+using System;
 
 namespace FunDoNotApplication.Controllers
 {
@@ -36,6 +38,30 @@ namespace FunDoNotApplication.Controllers
             }
             catch (System.Exception)
             {
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("Get")]
+        public IActionResult GetCollab(long notesId)
+        {
+            try
+            {
+                //long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = icollabBL.GetCollab(notesId);
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Collabrator feched", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "data not found" });
+                }
+
+            }
+            catch (System.Exception)
+            {
+
                 throw;
             }
         }
