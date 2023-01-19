@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Interface;
 using RepoLayer.Entities;
 using RepoLayer.Interface;
+using RepoLayer.Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,6 +32,18 @@ namespace BusinessLayer.Service
             try
             {
                 return this.iCollabRL.GetCollab(notesId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool RemoveCollab(long CollabID, long userId)
+        {
+            try
+            {
+                return iCollabRL.RemoveCollab(CollabID, userId);
             }
             catch (Exception)
             {
