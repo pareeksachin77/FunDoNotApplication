@@ -43,6 +43,8 @@ namespace FunDoNotApplication
             services.AddTransient<IUserRL, UserRL>();
             services.AddTransient<INoteBL, NoteBL>();
             services.AddTransient<INoteRL, NoteRL>();
+            services.AddTransient<ICollaboratorBL, CollaboratorBL>();
+            services.AddTransient<ICollaboratorRL, CollaboratorRL>();
             services.AddSwaggerGen();
             services.AddSwaggerGen(c =>
             {
