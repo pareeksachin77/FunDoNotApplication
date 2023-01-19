@@ -6,6 +6,7 @@ using System;
 using Experimental.System.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace FunDoNotApplication.Controllers
 {
@@ -232,6 +233,29 @@ namespace FunDoNotApplication.Controllers
             catch (Exception)
             {
 
+                throw;
+            }
+        }
+
+        [HttpPut]
+        [Route("Image")]
+        public IActionResult Image(IFormFile image, long noteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = noteBL.Image(image,noteId,userId);
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Cannot upload image." });
+                }
+            }
+            catch (System.Exception)
+            {
                 throw;
             }
         }

@@ -7,15 +7,20 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace RepoLayer.Service
 {
     public class NoteRL : INoteRL
     {
         FunDoContext fundoo;
-        public NoteRL(FunDoContext fundoo)
+        private readonly IConfiguration iconfiguration;
+        public NoteRL(FunDoContext fundoo, IConfiguration iconfiguration)
         {
             this.fundoo = fundoo;
+            this.iconfiguration = iconfiguration;
 
         }
 
@@ -215,6 +220,39 @@ namespace RepoLayer.Service
                 throw;
             }
 
+        }
+        public string Image(IFormFile image, long notesId, long userId)
+        {
+            try
+            {
+                var result = fundoo.NotesTable.Where(x => x.UserId == userId && x.NoteID == notesId).FirstOrDefault();
+                if (result != null)
+                {
+                    Account account = new Account(
+                      this.iconfiguration["CloudinarySettings:CloudName"],
+                        this.iconfiguration["CloudinarySettings:ApiKey"],
+                        this.iconfiguration["CloudinarySettings:ApiSecret"]
+                        );
+                    Cloudinary cloudinary = new Cloudinary(account);
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(image.FileName, image.OpenReadStream()),
+                    };
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    string imagePath = uploadResult.Url.ToString();
+                    result.Image = imagePath;
+                    fundoo.SaveChanges();
+                    return "Image uploaded successfully";
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
