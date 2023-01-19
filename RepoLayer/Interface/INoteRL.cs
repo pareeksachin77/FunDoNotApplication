@@ -17,5 +17,6 @@ namespace RepoLayer.Interface
 
         public bool Trash(long notesId, long userId);
         public bool Archive(long notesId, long userId);
+        public bool Color(long notesId, long userId, string color);
     }
 }

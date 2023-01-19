@@ -107,6 +107,18 @@ namespace BusinessLayer.Service
                 throw;
             }
         }
+        public bool Color(long notesId, long userId, string color)
+        {
+            try
+            {
+                return this.noteRL.Color(notesId,userId,color);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
     }
 }

@@ -212,6 +212,29 @@ namespace FunDoNotApplication.Controllers
                 throw;
             }
         }
+        [HttpPut]
+        [Route("Color")]
+        public IActionResult Color(long notesId, string color)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = noteBL.Color(notesId, userId, color);
+                if(result == true)
+                {
+                    return this.Ok(new { success = true, message = "color changed to" + color });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Cannot change color." });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
 
     }

@@ -10,16 +10,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace RepoLayer.Service
 {
-    public class NoteRL: INoteRL
+    public class NoteRL : INoteRL
     {
         FunDoContext fundoo;
         public NoteRL(FunDoContext fundoo)
         {
             this.fundoo = fundoo;
-            
+
         }
 
-        public NotesEntity CreateNote(NoteModel noteModel,long userId)
+        public NotesEntity CreateNote(NoteModel noteModel, long userId)
         {
             try
             {
@@ -65,18 +65,19 @@ namespace RepoLayer.Service
                 throw;
             }
         }
-        public bool UpdateNotes(long userId, long notesId,NoteModel noteModel)
+        public bool UpdateNotes(long userId, long notesId, NoteModel noteModel)
         {
             try
             {
                 var result = fundoo.NotesTable.FirstOrDefault(e => e.UserId == userId && e.NoteID == notesId);
-                if(result != null)
+                if (result != null)
                 {
-                    if(noteModel.Title != null)
+                    if (noteModel.Title != null)
                     {
                         result.Title = noteModel.Title;
                     }
-                    if(noteModel.Description != null){
+                    if (noteModel.Description != null)
+                    {
                         result.Description = noteModel.Description;
                     }
                     result.Updated = DateTime.Now;
@@ -101,7 +102,7 @@ namespace RepoLayer.Service
             {
                 var result = fundoo.NotesTable.FirstOrDefault(e => e.UserId == userId && e.NoteID == notesId);
 
-                if(result != null)
+                if (result != null)
                 {
                     fundoo.NotesTable.Remove(result);
                     fundoo.SaveChanges();
@@ -118,11 +119,11 @@ namespace RepoLayer.Service
                 throw;
             }
         }
-        public bool PinNote(long notesId,long userId)
+        public bool PinNote(long notesId, long userId)
         {
             try
             {
-                var result = fundoo.NotesTable.FirstOrDefault(e=>e.NoteID == notesId && e.UserId==userId);
+                var result = fundoo.NotesTable.FirstOrDefault(e => e.NoteID == notesId && e.UserId == userId);
                 if (result.Pin == true)
                 {
                     result.Pin = false;
@@ -141,17 +142,17 @@ namespace RepoLayer.Service
 
                 throw;
             }
-           
+
 
         }
-        public bool Trash(long notesId,long userId)
+        public bool Trash(long notesId, long userId)
         {
             try
             {
                 var result = fundoo.NotesTable.FirstOrDefault(e => e.NoteID == notesId && e.UserId == userId);
-                if ( result.Trash == true)
+                if (result.Trash == true)
                 {
-                    result.Trash=false;
+                    result.Trash = false;
                     fundoo.SaveChanges();
                     return false;
                 }
@@ -169,7 +170,7 @@ namespace RepoLayer.Service
             }
         }
 
-       public bool Archive(long notesId, long userId)
+        public bool Archive(long notesId, long userId)
         {
             try
             {
@@ -193,6 +194,27 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        public bool Color(long notesId, long userId, string color)
+        {
+            try
+            {
+                var result = fundoo.NotesTable.Where(x => x.UserId == userId && x.NoteID == notesId).FirstOrDefault();
+                if (result != null)
+                {
+                    result.Color = color;
+                    fundoo.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
+        }
     }
 }
