@@ -8,13 +8,14 @@ namespace RepoLayer.Context
 {
     public class FunDoContext : DbContext
     {
-        
-            public FunDoContext(DbContextOptions options): base(options)
-            {
-            }
-            public DbSet<UserEntity> UserTable{ get; set; }
-            public DbSet<NotesEntity> NotesTable { get; set; }
+
+        public FunDoContext(DbContextOptions options) : base(options)
+        {
+        }
+        public DbSet<UserEntity> UserTable { get; set; }
+        public DbSet<NotesEntity> NotesTable { get; set; }
         public DbSet<CollaboratorEntity> CollabTable { get; set; }
+        public DbSet<LabelEntity> LabelTable { get; set; }
     }
-    }
+}
 
