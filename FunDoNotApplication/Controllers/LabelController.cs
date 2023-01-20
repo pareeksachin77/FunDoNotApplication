@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using RepoLayer.Context;
 using System.Linq;
 using System;
+using RepoLayer.Entities;
+using System.Collections.Generic;
 
 namespace FunDoNotApplication.Controllers
 {
@@ -20,9 +22,7 @@ namespace FunDoNotApplication.Controllers
             this.fundoo = fundoo;
             this.iLabelBL = iLabelBL;
         }
-        //ok
-        
-        [Authorize]
+       
         [HttpPost]
         [Route("Create")]
         public IActionResult CreateLabel(long noteId, string labelname)
@@ -44,6 +44,30 @@ namespace FunDoNotApplication.Controllers
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [Route("Retrive")]
+        public IActionResult RetriveLabel(long labelId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = iLabelBL.RetriveLabel(labelId);
+                if(result != null)
+                {
+                    return Ok(new { success = true, mesage = "Label retrieved", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, mesage = "Unable to retrieved Label." });
+                }
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }

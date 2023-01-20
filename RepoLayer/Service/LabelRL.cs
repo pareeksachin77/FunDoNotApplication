@@ -50,5 +50,17 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        public IEnumerable<LabelEntity> RetriveLabel(long labelId)
+        {
+            try
+            {
+                var result = fundoo.LabelTable.Where(e => e.LabelID == labelId).ToList();
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

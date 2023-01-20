@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Interface;
+using RepoLayer.Entities;
 using RepoLayer.Interface;
 using RepoLayer.Service;
 using System;
@@ -19,7 +20,19 @@ namespace BusinessLayer.Service
             try
             {
                 return this.iLabelRL.CreateLabel(notesId, userId, labelName);
-                //ok
+               
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public IEnumerable<LabelEntity> RetriveLabel(long labelId)
+        {
+            try
+            {
+                return this.iLabelRL.RetriveLabel(labelId);
             }
             catch (Exception)
             {
@@ -28,5 +41,6 @@ namespace BusinessLayer.Service
             }
         }
     }
+
   
 }
