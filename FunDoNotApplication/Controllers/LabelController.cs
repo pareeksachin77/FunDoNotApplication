@@ -71,5 +71,30 @@ namespace FunDoNotApplication.Controllers
                 throw;
             }
         }
+        [HttpDelete]
+        [Route("Delete")]
+        public IActionResult DeleteLabel(long labelId)
+        {
+            try
+            {
+                //long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+
+                var result = iLabelBL.DeleteLabel(labelId);
+
+                if (result== true)
+                {
+                    return Ok(new { success = true, message = "Label Deleted", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Unable to Delete Label." });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

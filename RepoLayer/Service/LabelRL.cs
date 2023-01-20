@@ -62,5 +62,30 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+
+        public bool DeleteLabel(long labelId)
+        {
+            try
+            {
+                var result = fundoo.LabelTable.FirstOrDefault(e => e.LabelID == labelId);
+
+                if (result != null)
+                {
+
+                    fundoo.LabelTable.Remove(result);
+                    fundoo.SaveChanges();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
