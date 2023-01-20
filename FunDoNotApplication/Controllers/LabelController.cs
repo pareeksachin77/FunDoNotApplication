@@ -20,6 +20,8 @@ namespace FunDoNotApplication.Controllers
             this.fundoo = fundoo;
             this.iLabelBL = iLabelBL;
         }
+        //ok
+        
         [Authorize]
         [HttpPost]
         [Route("Create")]

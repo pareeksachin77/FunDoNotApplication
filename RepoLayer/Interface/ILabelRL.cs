@@ -8,5 +8,6 @@ namespace RepoLayer.Interface
     public interface ILabelRL
     {
         public bool CreateLabel(long notesId, long userId, string labelName);
+        //ok
     }
 }

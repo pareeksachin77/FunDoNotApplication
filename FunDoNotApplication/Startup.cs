@@ -25,6 +25,7 @@ namespace FunDoNotApplication
 {
     public class Startup
     {
+        //ok
         private readonly string _secret;
         public Startup(IConfiguration configuration)
         {
