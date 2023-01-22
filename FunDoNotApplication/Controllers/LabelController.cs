@@ -96,5 +96,29 @@ namespace FunDoNotApplication.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("Update")]
+        public IActionResult UpdateLabel(string name, long labelId)
+        {
+            try
+            {
+                //long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+                var result = iLabelBL.UpdateLabel(name, labelId);
+                if (result)
+                {
+                    return Ok(new { success = true, message = "Label updated.", data= result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Cannot update label" });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
