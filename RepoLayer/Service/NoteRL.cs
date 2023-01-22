@@ -70,6 +70,19 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+
+        public IEnumerable<NotesEntity> RetrieveAllNotes(long userId)
+        {
+            try
+            {
+                var result = fundoo.NotesTable.Where(x => x.UserId == userId);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public bool UpdateNotes(long userId, long notesId, NoteModel noteModel)
         {
             try
@@ -254,5 +267,6 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        
     }
 }

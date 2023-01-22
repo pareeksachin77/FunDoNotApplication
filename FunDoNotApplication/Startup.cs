@@ -101,7 +101,11 @@ namespace FunDoNotApplication
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret))
         };
     });
-
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "localhost:6379";
+            });
+            services.AddMemoryCache();
         }
 
 
@@ -128,6 +132,8 @@ namespace FunDoNotApplication
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Showing API V1");
             });
         }
+
+
 
     }
 }

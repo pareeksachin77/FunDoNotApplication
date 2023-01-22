@@ -11,6 +11,7 @@ namespace RepoLayer.Interface
     {
         public NotesEntity CreateNote(NoteModel noteModel, long UserId);
         public IEnumerable<NotesEntity> ReadNote(long userId, long notesId);
+        public IEnumerable<NotesEntity> RetrieveAllNotes(long userId);
 
         public bool UpdateNotes(long userId, long notesId, NoteModel noteModel);
         public bool DeleteNotes(long userId, long notesId);
@@ -19,7 +20,6 @@ namespace RepoLayer.Interface
         public bool Trash(long notesId, long userId);
         public bool Archive(long notesId, long userId);
         public bool Color(long notesId, long userId, string color);
-
         public string Image(IFormFile image, long notesId, long userId);
     }
 }

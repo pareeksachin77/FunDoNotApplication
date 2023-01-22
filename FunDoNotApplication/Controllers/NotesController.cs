@@ -7,6 +7,14 @@ using Experimental.System.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using RepoLayer.Entities;
+using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using RepoLayer.Context;
 
 namespace FunDoNotApplication.Controllers
 {
@@ -16,6 +24,10 @@ namespace FunDoNotApplication.Controllers
     public class NotesController : ControllerBase
     {
         INoteBL noteBL;
+        
+        private readonly IDistributedCache distributedCache;
+        private readonly FunDoContext fundoo;
+
         public NotesController(INoteBL noteBL)
         {
             this.noteBL = noteBL;
@@ -73,6 +85,30 @@ namespace FunDoNotApplication.Controllers
                 throw;
             }
         }
+
+        [HttpGet]
+        [Route("RetrieveAllNote")]
+        public IActionResult RetrieveAllNotes()
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = noteBL.RetrieveAllNotes(userId);
+                if (result != null)
+                {
+                    return this.Ok(new { success = true, message = "Note Retrieve Successfully", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Note Retrieve Unsuccessfull" });
+                }
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
         [HttpPut]
         [Route("Update")]
         public IActionResult UpdateNotes(long notesId, NoteModel noteModel)
@@ -258,6 +294,31 @@ namespace FunDoNotApplication.Controllers
             {
                 throw;
             }
+        }
+        [HttpGet("redis")]
+        public async Task<IActionResult> GetAllCustomersUsingRedisCache()
+        {
+            var userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+            var cacheKey = "NotesList";
+            string serializedCustomerList;
+            var NotesList = new List<NotesEntity>();
+            var redisNotesList = await distributedCache.GetAsync(cacheKey);
+            if (redisNotesList != null)
+            {
+                serializedCustomerList = Encoding.UTF8.GetString(redisNotesList);
+                NotesList = JsonConvert.DeserializeObject<List<NotesEntity>>(serializedCustomerList);
+            }
+            else
+            {
+                NotesList = fundoo.NotesTable.ToList();
+                serializedCustomerList = JsonConvert.SerializeObject(NotesList);
+                redisNotesList = Encoding.UTF8.GetBytes(serializedCustomerList);
+                var options = new DistributedCacheEntryOptions()
+                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+                await distributedCache.SetAsync(cacheKey, redisNotesList, options);
+            }
+            return Ok(NotesList);
         }
 
 
